@@ -1,0 +1,123 @@
+{% extends "music/base.html" %}
+
+{% block title %}
+歌手列表
+{% endblock %}
+
+
+{% block content %}
+
+<h2 class="page-title">歌手列表</h2>
+
+<p class="page-count">
+    共 {{ page_obj.paginator.count }} 位歌手
+</p>
+
+
+<div class="singer-grid">
+
+    {% for singer in page_obj %}
+
+        <div class="singer-card">
+
+            <a href="{% url 'singer_detail' singer.id %}">
+                <img
+                    src="/media/{{ singer.image }}"
+                    alt="{{ singer.name }}"
+                >
+            </a>
+
+            <h3>
+                <a href="{% url 'singer_detail' singer.id %}">
+                    {{ singer.name }}
+                </a>
+            </h3>
+
+            <p>
+                关注数：{{ singer.follower_count }}
+            </p>
+
+            <p>
+                单曲数：{{ singer.song_count }}
+            </p>
+
+        </div>
+
+    {% empty %}
+
+        <p>暂无歌手。</p>
+
+    {% endfor %}
+
+</div>
+
+
+<div class="pagination">
+
+    {% if page_obj.has_previous %}
+
+        <a href="?page=1">
+            首页
+        </a>
+
+        <a href="?page={{ page_obj.previous_page_number }}">
+            上一页
+        </a>
+
+    {% endif %}
+
+
+    {% for num in page_range %}
+
+    {% if num == "…" %}
+
+        <span>…</span>
+
+    {% elif page_obj.number == num %}
+
+        <strong>{{ num }}</strong>
+
+    {% else %}
+
+        <a href="?page={{ num }}">
+            {{ num }}
+        </a>
+
+    {% endif %}
+
+    {% endfor %}
+
+
+    {% if page_obj.has_next %}
+
+        <a href="?page={{ page_obj.next_page_number }}">
+            下一页
+        </a>
+
+        <a href="?page={{ page_obj.paginator.num_pages }}">
+            尾页
+        </a>
+
+    {% endif %}
+
+
+    <form class="page-jump" method="get">
+
+        <input
+            type="number"
+            name="page"
+            min="1"
+            max="{{ page_obj.paginator.num_pages }}"
+            placeholder="页码"
+            required
+        >
+
+        <button type="submit">
+            跳转
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

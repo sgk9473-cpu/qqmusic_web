@@ -1,0 +1,167 @@
+{% extends "music/base.html" %}
+
+
+{% block title %}
+{{ song.name }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="song-detail">
+
+    <!-- 歌曲基本信息 -->
+    <section class="song-header">
+
+        <img
+            class="song-cover"
+            src="/media/{{ song.image }}"
+            alt="{{ song.name }}"
+        >
+
+        <div class="song-info">
+
+            <h2>
+                {{ song.name }}
+            </h2>
+
+            <p>
+                <span class="info-label">歌手</span>
+
+                <a href="{% url 'singer_detail' song.singer.id %}">
+                    {{ song.singer.name }}
+                </a>
+            </p>
+
+            <p>
+                <span class="info-label">原始网站</span>
+
+                <a
+                    href="{{ song.source_url }}"
+                    target="_blank"
+                >
+                    打开原歌曲页面
+                </a>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 歌词 -->
+    <section class="detail-section">
+
+        <h3>
+            歌词
+        </h3>
+
+        <div class="lyrics">
+
+            <pre>{{ song.lyric }}</pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- 评论 -->
+    <section class="detail-section">
+
+        <h3>
+            评论
+        </h3>
+
+
+        <div class="comment-box">
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="add_comment"
+                >
+
+                <textarea
+                    name="content"
+                    maxlength="500"
+                    placeholder="写下你对这首歌的评论..."
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    提交评论
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="comment-list">
+
+            {% for comment in comments %}
+
+                <div class="comment">
+
+                    <p class="comment-content">
+                        {{ comment.content }}
+                    </p>
+
+                    <div class="comment-footer">
+
+                        <span class="comment-time">
+                            {{ comment.created_at|date:"Y-m-d H:i:s" }}
+                        </span>
+
+                        {% if comment.session_key == current_session_key %}
+
+                            <form method="post">
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="delete_comment"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="comment_id"
+                                    value="{{ comment.id }}"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="delete-button"
+                                >
+                                    删除
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p class="empty-comment">
+                    暂无评论，快来发表第一条评论吧！
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            QQ Music
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'music/style.css' %}">
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+<header>
+
+    <h1>
+        <a href="{% url 'home' %}">
+            QQ Music
+        </a>
+    </h1>
+
+    <nav>
+
+        <a href="{% url 'home' %}">
+            首页
+        </a>
+
+        <a href="{% url 'song_list' %}">
+            歌曲
+        </a>
+
+        <a href="{% url 'singer_list' %}">
+            歌手
+        </a>
+
+    </nav>
+
+    
+
+    <form action="{% url 'search' %}" method="get">
+
+        <input
+            type="text"
+            name="keyword"
+            placeholder="搜索歌手或歌曲"
+            maxlength="20"
+        >
+
+        <label>
+            <input
+                type="radio"
+                name="type"
+                value="song"
+                checked
+            >
+            歌曲
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="type"
+                value="singer"
+            >
+            歌手
+        </label>
+
+        <button type="submit">
+            搜索
+        </button>
+
+    </form>
+
+</header>
+
+
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+</body>
+
+</html>

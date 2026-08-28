@@ -1,0 +1,116 @@
+{% extends "music/base.html" %}
+
+
+{% block title %}
+{{ singer.name }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="singer-detail">
+
+    <!-- 歌手基本信息 -->
+    <section class="singer-header">
+
+        <img
+            class="singer-detail-image"
+            src="/media/{{ singer.image }}"
+            alt="{{ singer.name }}"
+        >
+
+        <div class="singer-info">
+
+            <h2>
+                {{ singer.name }}
+            </h2>
+
+            <div class="singer-stat">
+                <span>关注数</span>
+                <strong>{{ singer.follower_count }}</strong>
+            </div>
+
+            <div class="singer-stat">
+                <span>单曲数</span>
+                <strong>{{ singer.song_count }}</strong>
+            </div>
+
+            <p class="source-link">
+
+                <span>原始网站</span>
+
+                <a
+                    href="{{ singer.source_url }}"
+                    target="_blank"
+                >
+                    打开歌手主页
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 歌手简介 -->
+    <section class="detail-section">
+
+        <h3>
+            歌手简介
+        </h3>
+
+        <div class="singer-description">
+            <pre>{{ singer.description }}</pre>
+        </div>
+
+    </section>
+
+
+    <!-- 歌曲列表 -->
+    <section class="detail-section">
+
+        <h3>
+            歌曲列表
+        </h3>
+
+        <div class="song-grid">
+
+            {% for song in songs %}
+
+                <div class="song-card">
+
+                    <a href="{% url 'song_detail' song.id %}">
+
+                        <img
+                            src="/media/{{ song.image }}"
+                            alt="{{ song.name }}"
+                        >
+
+                    </a>
+
+                    <h3>
+
+                        <a href="{% url 'song_detail' song.id %}">
+                            {{ song.name }}
+                        </a>
+
+                    </h3>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    该歌手暂无歌曲。
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
