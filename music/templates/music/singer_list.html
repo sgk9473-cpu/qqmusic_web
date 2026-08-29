@@ -22,7 +22,7 @@
 
             <a href="{% url 'singer_detail' singer.id %}">
                 <img
-                    src="/media/{{ singer.image }}"
+                    src="/media/{{ singer.image|urlencode }}"
                     alt="{{ singer.name }}"
                 >
             </a>

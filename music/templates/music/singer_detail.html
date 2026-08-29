@@ -83,7 +83,7 @@
                     <a href="{% url 'song_detail' song.id %}">
 
                         <img
-                            src="/media/{{ song.image }}"
+                            src="/media/{{ song.image|urlencode }}"
                             alt="{{ song.name }}"
                         >
 
